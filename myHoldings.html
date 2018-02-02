@@ -1,9 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<style>
+		table {
+			margin-left:20%;
+			border-collapse: collapse;
+			width: 60%;
+		}
+
+		th, td {
+			text-align: left;
+			padding: 8px;
+		}
+
+		tr:nth-child(even){background-color: #f2f2f7}
+
+		th {
+			background-color: #4CAF50;
+			color: white;
+		}
+	</style>
 </head>
-<body bgcolor="#80b3ff">
+<body bgcolor="">
 	<div class="navbar">
 		<ul>
 			<li><a href="homepage.html">HOMEPAGE</a></li>
@@ -15,12 +33,38 @@
 		</ul>
 	</div>
 
-	<table align="center">
-		<tr> <td>NO</td> <td>NAME</td> <td>VOLUME</td> <td>TOTAL VALUE</td> <td>SELL</td> </tr>
-		<tr> <td>1</td> <td>TATA</td> <td>6</td> <td>6000</td> <td>SELL</td> </tr>
-		<tr> <td>2</td> <td>Wipro</td> <td>4</td> <td>8000</td> <td>SELL</td> </tr>
-		<tr> <td>3</td> <td>Reliance</td> <td>6</td> <td>15000</td> <td>SELL</td> </tr>
-		<tr> <td>4</td> <td>MRF</td> <td>10</td> <td>5000</td> <td>SELL</td> </tr>
+
+	<table>
+	  <tr>
+		<th>NAME</th>
+		<th>VOLUME</th>
+		<th>TOTAL VALUE</th>
+		<th>SELL</th>
+	  </tr>
+	  <tr>
+		<td>TATA</td>
+		<td>6</td>
+		<td>6000</td>
+		<td>SELL</td>
+	  </tr>
+	  <tr>
+		<td>Wipro</td>
+		<td>4</td>
+		<td>8000</td>
+		<td>SELL</td>
+	  </tr>
+	  <tr>
+		<td>MRF</td>
+		<td>10</td>
+		<td>5000</td>
+		<td>SELL</td>
+	  </tr>
+	  <tr>
+		<td>Reliance</td>
+		<td>6</td>
+		<td>15000</td>   
+		<td>SELL</td>
+	</tr>
 	</table>
 
 </body>
