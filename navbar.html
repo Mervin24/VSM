@@ -1,16 +1,47 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<style>
+		body {margin: 0;}
+
+		ul.topnav {
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+			overflow: hidden;
+			background-color: #333;
+		}
+
+		ul.topnav li {float: left;}
+
+		ul.topnav li a {
+			display: block;
+			color: white;
+			text-align: center;
+			padding: 14px 16px;
+			text-decoration: none;
+		}
+
+		ul.topnav li a:hover:not(.active) {background-color: #111;}
+
+		ul.topnav li a.active {background-color: #4CAF50;}
+
+		ul.topnav li.right {float: right;}
+
+		@media screen and (max-width: 600px){
+			ul.topnav li.right, 
+			ul.topnav li {float: none;}
+		}
+	</style>
 </head>
 <body>
 	<div class = "navbar">
-		<ul>
-			<li><a href="homepage.html">HOMEPAGE</a></li>
-			<li><a href="myHoldings.html">MY HOLDINGS</a></li>
-			<li><a href="company.html">COMPANY</a></li>
-			<li><a href="Leaderboard.html">LEADERBOARD</a></li>
-			
+		<ul class="topnav">
+		  <li><a class="active" href="homepage.html">Home</a></li>
+		  <li><a href="myHoldings.html">My Holdings</a></li>
+		  <li><a href="company.html">Company</a></li>
+		  <li><a href="leaderboard.html">Leaderboard</a></li>
+		    <li class="right"><a href="login.html">Sign Out</a></li>
 
 		</ul>
 	</div>
