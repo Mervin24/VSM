@@ -6,13 +6,32 @@
     <style>
         input{
             margin: 10px;
-            height: 20px;
+            height: 35px;
+            border-radius : 5px;
         } 
+
+        .get_details{
+            text-align: center;
+        }
+
+        input[type = "submit"]{
+            border-radius: 10px;
+            height: 35px;
+            width: 135px ;
+        }
+
+        .link{
+            text-align: center;
+        }
+
+
+    
     </style>
    
 </head>
 <body bgcolor="#80b3ff">
-    <form name="myForm" >
+    <div class = "get_details">
+        <form name="myForm" >
         <input type="text" id="first" placeholder="First Name">
         <br />
         <input type="text" id="second" placeholder="Last Name" >
@@ -25,10 +44,11 @@
         <br />
         <input type="submit" value="submit">
     </form>
-
-    <label>
+    </div>
+    <div class="link">
+        <label>
         <a href="login.html"> Login </a>
-    </label>
-
-</body>
+    </label>      
+    </div>
+    </body>
 </html>
