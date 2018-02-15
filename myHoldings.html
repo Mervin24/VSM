@@ -2,20 +2,34 @@
 <html>
 <head>
 	<link rel="stylesheet" href="myHoldingcssfile.css" /> 
+	<script>
+		function myFunction() {
+		var x = document.getElementById("tnav");
+		if (x.className === "topnav") {
+			x.className += " responsive";
+		} else {
+			x.className = "topnav";
+		}
+		}
+</script>
 </head>
 <body bgcolor="">
-	<div class="navbar">
-		<ul class="topnav">
+	<!--<div class="navbar">
+		<ul class="topnav" id="tnav">
 			<li><a href="homepage.html">HOMEPAGE</a></li>
 			<li><a href="myHoldings.html">MY HOLDINGS</a></li>
 			<li><a href="company.html">COMPANY</a></li>
 			<li><a href="Leaderboard.html">LEADERBOARD</a></li>
-			
-
 		</ul>
-	</div>
-
-
+	</div>-->
+<div class="topnav" id="tnav">
+	<a href="homepage.html">HOMEPAGE</a>
+	<a href="myHoldings.html">MY HOLDINGS</a>
+	<a href="company.html">COMPANY</a>
+	<a href="Leaderboard.html">LEADERBOARD</a>
+    <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
+</div>
+<div style="overflow-x:auto;">
 	<table>
 	  <tr>
 		<th>NAME</th>
@@ -48,6 +62,6 @@
 		<td>SELL</td>
 	</tr>
 	</table>
-
+</div>
 </body>
 </html>
