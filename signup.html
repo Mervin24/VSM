@@ -6,13 +6,55 @@
     <style>
         input{
             margin: 10px;
-            height: 20px;
+            height: 35px;
+            border-radius : 5px;
         } 
+
+        .get_details{
+            
+            width: 30%;
+            margin-left:35%;
+            margin-top: 5%;
+            text-align: center;   
+            padding : 2px;
+            padding-top: 15px;
+            padding-bottom : 35px;
+            border:1px solid #9e9e9e;
+        }
+
+        input[type = "submit"]{
+            border-radius: 10px;
+            background-color : #4286f4;
+            color: white;
+            height: 35px;
+            width: 145px ;
+        }
+
+        .link{
+            text-align: center;
+        }
+
+        .Sign_up{
+            padding-top: 0px;
+            font-size: 27px;
+            text-align: center;
+            padding-bottom: 10px;
+        }
+
+
+    
     </style>
    
 </head>
-<body bgcolor="#80b3ff">
-    <form name="myForm">
+<body bgcolor="#fff">
+   
+    <div class = "get_details" >
+     <div class="Sign_up">
+        <label>
+            Sign up
+        </label>
+    </div>
+        <form name="myForm"  >
         <input type="text" id="first" placeholder="First Name">
         <br />
         <input type="text" id="second" placeholder="Last Name" >
@@ -23,12 +65,14 @@
         <br />
         <input type="number" id="phone" maxlength="10" minlength="8" placeholder="Contact Number">
         <br />
-        <input type="submit" value="submit">
+        <input type="submit" value="Create my account">
     </form>
-
-    <label>
+    <div class="link">
+        <label>
         <a href="login.html"> Login </a>
-    </label>
-
-</body>
+    </label>      
+    </div>
+    </div>
+    
+    </body>
 </html>
