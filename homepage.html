@@ -1,18 +1,21 @@
 <html>
 <head>
+	<script src="https://www.w3schools.com/lib/w3.js"></script> 
 	<link rel="stylesheet" href="myHoldingcssfile.css" /> 
+	<script>
+		function myFunction() {
+		var x = document.getElementById("tnav");
+		if (x.className === "topnav") {
+			x.className += " responsive";
+		} else {
+			x.className = "topnav";
+		}
+		}
+	</script>
 </head>
 <body>
-<div class="navbar">
-		<ul class="topnav">
-			<li><a href="homepage.html">HOMEPAGE</a></li>
-			<li><a href="myHoldings.html">MY HOLDINGS</a></li>
-			<li><a href="company.html">COMPANY</a></li>
-			<li><a href="Leaderboard.html">LEADERBOARD</a></li>
-			
+<div w3-include-html="navbar.html"></div>
 
-		</ul>
-	</div>
 <h1 align="center">WELCOME TO VSM</h1>
 <h3 align="center"> News</h3>
 <p align="center">
@@ -22,5 +25,9 @@
 	<li>Reliance faces a lawsuit</li>
 </ul>
 </p>
+
+ <script>
+w3.includeHTML();
+</script> 
 </body>
 </html>
