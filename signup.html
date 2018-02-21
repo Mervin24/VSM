@@ -2,14 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
     <style>
         input{
             margin: 10px;
             height: 35px;
             border-radius : 5px;
         } 
-
+		input:focus{
+			background-color:lightblue;
+		}
         .get_details{
             
             width: 30%;
@@ -54,18 +55,22 @@
             Sign up
         </label>
     </div>
-        <form name="myForm"  >
-        <input type="text" id="first" placeholder="First Name">
-        <br />
-        <input type="text" id="second" placeholder="Last Name" >
-        <br />
-        <input type="number" id="id" placeholder="Id Number">
-        <br />
-        <input type="email" id="mail" placeholder="Email Id" >
-        <br />
-        <input type="number" id="phone" maxlength="10" minlength="8" placeholder="Contact Number">
-        <br />
-        <input type="submit" value="Create my account">
+        <form name="myForm" onsubmit="return Validate(this)"action="login.html" >
+        <input type="text" id="first" placeholder="First Name" required>
+        <br>
+        <input type="text" id="second" placeholder="Last Name" required>
+        <br>
+        <input type="number" id="id" placeholder="Id Number" required>
+        <br>
+        <input type="email" id="mail" placeholder="Email Id" required>
+        <br>
+        <input type="number" id="phone" maxlength="10" minlength="8" placeholder="Contact Number" required>
+        <br>
+		<input type="password" id="password" placeholder="Password" required>
+        <br>
+        <input type="password" id="confirm_password" placeholder="Confirm Password" required>
+		<br>
+        <input type="submit"  value="Create my account">
     </form>
     <div class="link">
         <label>
@@ -73,6 +78,48 @@
     </label>      
     </div>
     </div>
-    
+    <script>
+		function Validate(form){
+			x=document.getElementById("password").value;
+			y=document.getElementById("confirm_password").value;
+			z=document.getElementById("phone").value;
+			
+			var letter = /[a-z]/;
+			var upper  =/[A-Z]/;
+			var number = /[0-9]/;
+			if(x!=y){
+				alert("password and confirm password values don't match");
+				form.password.focus();
+				return false;
+			}
+			if(x.length<6){
+				alert("password should be greater than 6 charactesr");
+				form.password.focus();
+				return false;
+			}
+			if(!letter.test(x)){
+				alert("Please make sure password includes a lowercase letter.")
+				form.password.focus();
+				return false;
+			  }
+			  if(!number.test(x)){
+				alert("Please make sure Password Includes a Digit")
+				form.password.focus();
+				return false;     
+			  }
+			  if(!upper.test(x)) {
+				alert("Please make sure password includes an uppercase letter.");
+				form.password.focus();
+				return false;
+			  }
+			  if(z.length!=10){
+				alert("phone number should be 10 digits");
+				form.phone.focus();
+				return false;
+			}
+			  
+			  return true;	
+		}
+	</script>
     </body>
 </html>
