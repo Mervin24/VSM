@@ -70,7 +70,8 @@ table {
 	margin-top:1%;
 	margin-left:20%;
 	border-collapse: collapse;
-	width: 60%;
+	width: 0%;
+	height:0%;
 }
 th, td {
 	text-align: left;

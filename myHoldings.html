@@ -3,6 +3,8 @@
 <head>
 	<link rel="stylesheet" href="myHoldingcssfile.css" /> 
 	<script src="https://www.w3schools.com/lib/w3.js"></script> 
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 	<script>
 		function myFunction() {
 		var x = document.getElementById("tnav");
@@ -12,6 +14,14 @@
 			x.className = "topnav";
 		}
 		}
+		
+		$(document).ready(function(){
+			$("#search").fadeIn();
+			$("#table").fadeIn("slow");
+        var table = $("#table");
+        table.animate({width: '0px', opacity: '0.8'}, "slow");
+        table.animate({width: '60%', opacity: '0.8'}, "slow");
+		});
 </script>
 
 </head>
@@ -25,9 +35,9 @@
 		</ul>
 	</div>-->
 <div w3-include-html="navbar.html"></div>
-<input align="center" type="text" placeholder="Search..." onkeyup="filterNames()" id="search">
+<input align="center" style="display:none" type="text" placeholder="Search..." onkeyup="filterNames()" id="search">
 <div style="overflow-x:auto;">
-	<table id="table">
+	<table id="table" style="display:none;">
 	  <tr>
 		<th>NAME</th>
 		<th>VOLUME</th>

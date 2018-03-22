@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+	<script>
+	$(document).ready(function(){
+			$(".get_details").slideDown(2000)
+	});
+	</script>
     <meta charset="UTF-8">
     <style>
         input{
@@ -12,10 +19,10 @@
 			background-color:lightblue;
 		}
         .get_details{
-            
+            display:none;
             width: 30%;
             margin-left:35%;
-            margin-top: 5%;
+            margin-top: 1%;
             text-align: center;   
             padding : 2px;
             padding-top: 15px;
@@ -64,7 +71,7 @@
         <br>
         <input type="email" id="mail" placeholder="Email Id" required>
         <br>
-        <input type="number" id="phone" maxlength="10" minlength="8" placeholder="Contact Number" required>
+        <input type="number" id="phone" maxlength="10" minlength="10" placeholder="Contact Number" required>
         <br>
 		<input type="password" id="password" placeholder="Password" required>
         <br>
