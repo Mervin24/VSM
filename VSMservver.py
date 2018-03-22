@@ -1,14 +1,35 @@
-imofrom flask import Flask,jsonify,request
+from flask import Flask,jsonify,request,render_template
+from flask.ext.mysql import MySQL
 
 app = Flask(__name__)
 
-db = MySQLdb.connect("localhost", "root", "", "vsm")
-cursor=db.cursor()
+mysql = MySQL()
+ 
+# MySQL configurations
+app.config['MYSQL_DATABASE_USER'] = 'root'
+app.config['MYSQL_DATABASE_PASSWORD'] = ''
+app.config['MYSQL_DATABASE_DB'] = 'vsm'
+app.config['MYSQL_DATABASE_HOST'] = 'localhost'
+mysql.init_app(app)
 
-INSERT INTO `users` (`username`, `password`, `phone_number`, `email`, `name`, `id_num`) VALUES ('Mervin24', 'deep1BC', '8974561230', 'mdalmet@gmail.com', 'Mervin Dalmet', NULL);
+	
+conn = mysql.connect()
+cursor=conn.cursor()
 
-@app.route("/signup",methods=["GET","POST"])
+#INSERT INTO `users` (`username`, `password`, `phone_number`, `email`, `name`, `id_num`) VALUES ('Mervin24', 'deep1BC', '8974561230', 'mdalmet@gmail.com', 'Mervin Dalmet', NULL);
+
+@app.route("/")
+def index():
+	return render_template('login.html')
+	
+@app.route("/signupPage")
+def signupPage():
+	return render_template('signup.html')
+	
+
+@app.route("/signup",methods=['GET', 'POST'])
 def Signup():
+	#print("hello")
 	firstName = request.form["firstName"]
 	lastName = request.form["lastName"]
 	Username = request.form["username"]
@@ -16,7 +37,24 @@ def Signup():
 	contact = request.form["contact"]
 	id_num = request.form["id"]
 	email = request.form["email"]
+	cursor.execute("INSERT INTO `users` (`username`, `password`, `phone_number`, `email`, `name`) VALUES ('"+Username+"', '"+password+"', '"+contact+"', '"+email+"', '"+firstName+" "+lastName+"');")
+	conn.commit()
+	return render_template("login.html")
+
+@app.route("/login",methods=['GET', 'POST'])	
+def login():
+	print("hi")
+	username = request.form["username"]
+	password = request.form["password"]
+	print(password)
+	cursor.execute("SELECT `password` FROM `users` WHERE username='"+username+"' ;")
+	result = cursor.fetchone()
+	print(str(result[0]))
+	if(result[0]==password):
+		return render_template('homepage.html')
+	else:
+		return render_template("login.html")
 	
-	cursor.execute("")
+	
 if __name__ == "__main__":
 	app.run(host="0.0.0.0",port=5050,debug=True)

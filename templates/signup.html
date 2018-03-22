@@ -60,7 +60,7 @@
             Sign up
         </label>
     </div>
-        <form name="myForm" onsubmit="return Validate(this)"action="login.html" >
+     <form name="myForm" onsubmit="return Validate(this)" action="/signup" method="POST">
         <input type="text" name="firstName" id="first" placeholder="First Name" required>
         <br>
         <input type="text" name="lastName" id="second" placeholder="Last Name" required>
@@ -77,11 +77,11 @@
         <br>
         <input type="password" id="confirm_password" placeholder="Confirm Password" required>
 		<br>
-        <input type="submit"  value="Create my account">
+        <input type="submit" id="submit" value="Create my account">
     </form>
     <div class="link">
         <label>
-        <a href="login.html"> Login </a>
+        <a href="/"> Login </a>
     </label>      
     </div>
     </div>
@@ -124,9 +124,12 @@
 				form.phone.focus();
 				return false;
 			}
-			  
+			 
 			  return true;	
 		}
+		
+		
+		
 	</script>
     </body>
 </html>
