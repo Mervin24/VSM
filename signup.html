@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
 	<script>
 	$(document).ready(function(){
 			$(".get_details").slideDown(2000)
@@ -23,10 +22,9 @@
             width: 30%;
             margin-left:35%;
             margin-top: 1%;
-            text-align: center;   
-            padding : 2px;
+            text-align: center;   	
             padding-top: 15px;
-            padding-bottom : 35px;
+            padding-bottom : 15px;
             border:1px solid #9e9e9e;
         }
 
@@ -63,17 +61,19 @@
         </label>
     </div>
         <form name="myForm" onsubmit="return Validate(this)"action="login.html" >
-        <input type="text" id="first" placeholder="First Name" required>
+        <input type="text" name="firstName" id="first" placeholder="First Name" required>
         <br>
-        <input type="text" id="second" placeholder="Last Name" required>
+        <input type="text" name="lastName" id="second" placeholder="Last Name" required>
         <br>
-        <input type="number" id="id" placeholder="Id Number" required>
+        <input type="text" name="username" id="second" placeholder="Username" required>
         <br>
-        <input type="email" id="mail" placeholder="Email Id" required>
+        <input type="number" name="id" id="id" placeholder="Id Number" required>
         <br>
-        <input type="number" id="phone" maxlength="10" minlength="10" placeholder="Contact Number" required>
+        <input type="email" name="email" id="mail" placeholder="Email Id" required>
         <br>
-		<input type="password" id="password" placeholder="Password" required>
+        <input type="number" name="contact"id="phone" maxlength="10" minlength="10" placeholder="Contact Number" required>
+        <br>
+		<input type="password" name="pass" id="password" placeholder="Password" required>
         <br>
         <input type="password" id="confirm_password" placeholder="Confirm Password" required>
 		<br>
