@@ -1,18 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<link rel="stylesheet" href="myHoldingcssfile.css" /> 
-	
+	<link rel="stylesheet" href="/stylesheet" /> 
+	<script>
+		function myFunction() {
+			var x = document.getElementById("myTopnav");
+			if (x.className === "topnav") {
+				x.className += " responsive";
+			} else {
+				x.className = "topnav";
+			}
+		}
+	</script>
 	
 </head>
 <body>
 <div class="topnav" id="tnav">
-	<a href="homepage.html">HOMEPAGE</a>
-	<a href="myHoldings.html">MY HOLDINGS</a>
-	<a href="company.html">COMPANY</a>
-	<a href="Leaderboard.html">LEADERBOARD</a>
-	<a href="login.html" style="float:right;">LOGOUT</a>
-    <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
+	<a href="/homepage">HOMEPAGE</a>
+	<a href="/myHoldings">MY HOLDINGS</a>
+	<a href="/company">COMPANY</a>
+	<a href="/leaderboard">LEADERBOARD</a>
+	<a href="/" style="float:right;">LOGOUT</a>
+    <a href="#" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
 </div>
 </body>
 </html>

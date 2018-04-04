@@ -1,6 +1,6 @@
 <html>
 <head>
-	<link rel="stylesheet" href="myHoldingcssfile.css" /> 
+	<link rel="stylesheet" href="/stylesheet" /> 
 	<script src="https://www.w3schools.com/lib/w3.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
@@ -26,10 +26,10 @@
 	</script>
 </head>
 <body>
-	<div w3-include-html="navbar.html"></div>
+	<div w3-include-html="/navbar"></div>
 	<input id="search" style="display:none"align="center" type="text" placeholder="Search..." onkeyup="filterNames()">
 	<table id ="table" style="display:none">
-		<tr><th>Name</th><th>Dividend</th><th>volume</th></th>
+		<tr><th>Name</th><th>Dividend</th><th>volume</th></tr>
 		<tr><td>TATA</td><td>1000</td><td>500</td></tr>
 		<tr><td>Wipro</td><td>2000</td><td>1000</td></tr>
 		<tr><td>Reliance</td><td>2500</td><td>200</td></tr>
@@ -56,6 +56,28 @@ function filterNames() {
     }       
   }
 }
+
+
+function onRowClick(tableId, callback) {
+    var table = document.getElementById(tableId),
+        rows = table.getElementsByTagName("tr"),
+        i;
+    for (i = 0; i < rows.length; i++) {
+        table.rows[i].onclick = function (row) {
+			
+            return function () {
+			
+                callback(row);
+            };
+        }(table.rows[i]);
+    }
+};
+ 
+onRowClick("table", function (row){
+    var value = row.getElementsByTagName("td")[0].innerHTML;
+    document.getElementById('search').value = value + " clicked!";
+    console.log("value>>", value);
+});
 </script> 
 </body>
 </html>

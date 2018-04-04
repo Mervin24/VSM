@@ -1,10 +1,10 @@
 from flask import Flask,jsonify,request,render_template
 from flask.ext.mysql import MySQL
+from flask_mail import Mail, Message
+from smtplib import SMTP
 
 app = Flask(__name__)
-
 mysql = MySQL()
- 
 # MySQL configurations
 app.config['MYSQL_DATABASE_USER'] = 'root'
 app.config['MYSQL_DATABASE_PASSWORD'] = ''
@@ -55,6 +55,32 @@ def login():
 	else:
 		return render_template("login.html")
 	
+@app.route("/navbar",methods=['GET', 'POST'])	
+def navbar():	
+	return render_template("navbar.html")
+	
+@app.route("/homepage",methods=['GET', 'POST'])	
+def homepage():	
+	return render_template("homepage.html")
+	
+@app.route("/company",methods=['GET', 'POST'])	
+def company():	
+	return render_template("company.html")
+	
+@app.route("/myHoldings",methods=['GET', 'POST'])	
+def myHoldings():	
+	return render_template("myHoldings.html")
+
+@app.route("/leaderboard",methods=['GET', 'POST'])	
+def leaderboard():	
+	return render_template("leaderboard.html")
+	
+@app.route("/stylesheet",methods=['GET', 'POST'])	
+def stylesheet():	
+	return render_template("myHoldingcssfile.css")
+
+
+
 	
 if __name__ == "__main__":
 	app.run(host="0.0.0.0",port=5050,debug=True)

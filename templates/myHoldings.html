@@ -1,41 +1,13 @@
-<!DOCTYPE html>
 <html>
 <head>
-	<link rel="stylesheet" href="myHoldingcssfile.css" /> 
 	<script src="https://www.w3schools.com/lib/w3.js"></script> 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-	<script>
-		function myFunction() {
-		var x = document.getElementById("tnav");
-		if (x.className === "topnav") {
-			x.className += " responsive";
-		} else {
-			x.className = "topnav";
-		}
-		}
-		
-		$(document).ready(function(){
-			$("#search").fadeIn();
-			$("#table").fadeIn("slow");
-        var table = $("#table");
-        table.animate({width: '0px', opacity: '0.8'}, "slow");
-        table.animate({width: '60%', opacity: '0.8'}, "slow");
-		});
-</script>
-
+	<link rel="stylesheet" href="/stylesheet" /> 
 </head>
-<body bgcolor="">
-	<!--<div class="navbar">
-		<ul class="topnav" id="tnav">
-			<li><a href="homepage.html">HOMEPAGE</a></li>
-			<li><a href="myHoldings.html">MY HOLDINGS</a></li>
-			<li><a href="company.html">COMPANY</a></li>
-			<li><a href="Leaderboard.html">LEADERBOARD</a></li>
-		</ul>
-	</div>-->
-<div w3-include-html="navbar.html"></div>
-<input align="center" style="display:none" type="text" placeholder="Search..." onkeyup="filterNames()" id="search">
+<body>
+	
+<div w3-include-html="/navbar"></div>
+<input align="center" style="display:none;" type="text" placeholder="Search..." onkeyup="filterNames()" id="search">
 <div style="overflow-x:auto;">
 	<table id="table" style="display:none;">
 	  <tr>
@@ -72,6 +44,7 @@
 </div>
  <script>
 w3.includeHTML();
+
 function filterNames() {
   var input, filter, table, tr, td, i;
   input = document.getElementById("search");
@@ -89,6 +62,45 @@ function filterNames() {
     }       
   }
 }
-</script> 
+</script>
+	<script>
+	
+		function onRowClick(tableId, callback) {
+    var table = document.getElementById(tableId),
+        rows = table.getElementsByTagName("tr"),
+        i;
+    for (i = 0; i < rows.length; i++) {
+        table.rows[i].onclick = function (row) {
+			
+            return function () {
+			
+                callback(row);
+            };
+        }(table.rows[i]);
+    }
+};
+ 
+onRowClick("table", function (row){
+    var value = row.getElementsByTagName("td")[0].innerHTML;
+    document.getElementById('search').value = value + " clicked!";
+    console.log("value>>", value);
+});
+		function myFunction() {
+		var x = document.getElementById("tnav");
+		if (x.className === "topnav") {
+			x.className += " responsive";
+		} else {
+			x.className = "topnav";
+		}
+		}
+		
+		$(document).ready(function(){
+			$("#search").fadeIn();
+			$("#table").fadeIn("slow");
+        var table = $("#table");
+        table.animate({width: '0px', opacity: '0.8'}, "slow");
+        table.animate({width: '60%', opacity: '0.8'}, "slow");
+		});
+	</script> 
 </body>
 </html>
