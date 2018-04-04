@@ -25,20 +25,38 @@
 		
 	</script>
 </head>
-<body>
+<body onload="resultrun()">
+	
 	<div w3-include-html="/navbar"></div>
 	<input id="search" style="display:none"align="center" type="text" placeholder="Search..." onkeyup="filterNames()">
 	<table id ="table" style="display:none">
-		<tr><th>Name</th><th>Dividend</th><th>volume</th></tr>
-		<tr><td>TATA</td><td>1000</td><td>500</td></tr>
-		<tr><td>Wipro</td><td>2000</td><td>1000</td></tr>
-		<tr><td>Reliance</td><td>2500</td><td>200</td></tr>
-		<tr><td>MRF</td><td>500</td><td>3000</td></tr>
+		<tr><th>ID</th><th>Name</th><th>Volume</th><th>Price</th></tr>
+		
 	</table>
-	
+	<input id="clickedName" style="display:none"align="center" type="text">
  <script>
 w3.includeHTML();
-
+ 
+ function resultrun(){
+	var result = '{{result}}';
+	result = result.split("),");	
+	for(var i=0;i<result.length;i++){
+	alert("ff");
+    var y = document.createElement("TR");
+    y.setAttribute("id", "myTr"+i);
+    document.getElementById("table").appendChild(y);
+	var array = result[i].split(",");
+	for(var j =0;j<array.length;j++){
+    var z = document.createElement("TD");
+    z.setAttribute("id", "myTd"+i+j);
+    var t = document.createTextNode(array[j]);
+    z.appendChild(t);
+    
+    document.getElementById("myTr"+i).appendChild(z);
+    }
+    }
+	alert(result[0]);
+ }
 function filterNames() {
   var input, filter, table, tr, td, i;
   input = document.getElementById("search");
@@ -75,9 +93,12 @@ function onRowClick(tableId, callback) {
  
 onRowClick("table", function (row){
     var value = row.getElementsByTagName("td")[0].innerHTML;
-    document.getElementById('search').value = value + " clicked!";
+    document.getElementById('clickedName').value = value + " clicked!";
     console.log("value>>", value);
 });
+
+
+
 </script> 
 </body>
 </html>

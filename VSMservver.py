@@ -2,6 +2,7 @@ from flask import Flask,jsonify,request,render_template
 from flask.ext.mysql import MySQL
 from flask_mail import Mail, Message
 from smtplib import SMTP
+from flask import send_file
 
 app = Flask(__name__)
 mysql = MySQL()
@@ -44,6 +45,7 @@ def Signup():
 @app.route("/login",methods=['GET', 'POST'])	
 def login():
 	print("hi")
+	cursor=conn.cursor()
 	username = request.form["username"]
 	password = request.form["password"]
 	print(password)
@@ -65,7 +67,16 @@ def homepage():
 	
 @app.route("/company",methods=['GET', 'POST'])	
 def company():	
-	return render_template("company.html")
+	cursor=conn.cursor()
+	cursor.execute("SELECT * FROM `company` ;")
+	result=cursor.fetchall()
+	result = str(result)
+	result = result.replace("'","")
+	result = result.replace("(","")
+	
+	result = result[0:len(result)-2]
+	print(result)
+	return render_template("company.html", result = result )
 	
 @app.route("/myHoldings",methods=['GET', 'POST'])	
 def myHoldings():	
@@ -78,7 +89,6 @@ def leaderboard():
 @app.route("/stylesheet",methods=['GET', 'POST'])	
 def stylesheet():	
 	return render_template("myHoldingcssfile.css")
-
 
 
 	
