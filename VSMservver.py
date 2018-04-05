@@ -19,10 +19,16 @@ cursor=conn.cursor()
 
 #INSERT INTO `users` (`username`, `password`, `phone_number`, `email`, `name`, `id_num`) VALUES ('Mervin24', 'deep1BC', '8974561230', 'mdalmet@gmail.com', 'Mervin Dalmet', NULL);
 
+def sensor():
+    """ Function for test purposes. """
+    getcsv()
+    plot()
+    print("Companies updated")
 
+sched = BackgroundScheduler(daemon=True)
+sched.add_job(sensor,'interval',minutes=1)
+sched.start()
 
-
-	
 def getcsv():
 	cursor=conn.cursor()
 	
