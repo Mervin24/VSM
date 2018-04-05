@@ -39,9 +39,10 @@ w3.includeHTML();
  
  function resultrun(){
 	var result = '{{result}}';
-	result = result.split("),");	
+	result = result.split("),");
+	alert(typeof(result));
 	for(var i=0;i<result.length;i++){
-	alert("ff");
+	
     var y = document.createElement("TR");
     y.setAttribute("id", "myTr"+i);
     document.getElementById("table").appendChild(y);
@@ -55,7 +56,7 @@ w3.includeHTML();
     document.getElementById("myTr"+i).appendChild(z);
     }
     }
-	alert(result[0]);
+	
  }
 function filterNames() {
   var input, filter, table, tr, td, i;

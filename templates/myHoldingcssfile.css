@@ -58,7 +58,7 @@ input[type=text]{
 	padding: 12px 20px 12px 40px;
 	border :1px solid #2c9343;
 	color:black;
-	background-image: url('/static/searchpic.png');
+	background-image: url('/static/images/searchpic.png');
     background-position: 10px 12px;
 	background-repeat: no-repeat;
 }
