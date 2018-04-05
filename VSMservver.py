@@ -100,7 +100,7 @@ def getcsv():
 	result=cursor.fetchall()
 	print(type(result))
 	for i in result :
-		name = i[0]+".csv"
+		name = "/static/data/"+i[0]+".csv"
 		f = open(name,'r')
 		list = f.readlines()
 		f.close()
@@ -136,7 +136,7 @@ def plot():
 	for i in result :
 		print(count)
 		count+=1
-		name = i[0]+".csv"
+		name = "/static/data/"+i[0]+".csv"
 		
 		x.clear()
 		y.clear()
@@ -151,7 +151,7 @@ def plot():
 		plt.ylabel('Price')
 		
 		plt.title('Stock Value')
-		png_name = i[0]+".png"
+		png_name = "/static/images/"+i[0]+".png"
 		plt.savefig(png_name)
 		plt.gcf().clear()
 			
