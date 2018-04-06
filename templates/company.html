@@ -3,7 +3,7 @@
 	<link rel="stylesheet" href="/stylesheet" /> 
 	<script src="https://www.w3schools.com/lib/w3.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
+	<script src="/static/Cookies.js"></script>
 	<script>
 		function myFunction() {
 		var x = document.getElementById("tnav");
@@ -33,20 +33,36 @@
 		<tr><th>ID</th><th>Name</th><th>Volume</th><th>Price</th></tr>
 		
 	</table>
-	<input id="clickedName" style="display:none"align="center" type="text">
  <script>
 w3.includeHTML();
  
+ 
+ function onRowClick(tableId, callback) {
+    var table = document.getElementById(tableId),
+        rows = table.getElementsByTagName("tr"),
+        i;
+		console.log(rows.length);
+
+    for (i = 0; i < rows.length; i++) {
+        table.rows[i].onclick = function (row) {
+			
+            return function () {
+				
+                callback(row);
+            };
+			
+        }(table.rows[i]);
+    }
+};
+
  function resultrun(){
-	var result = '{{result}}';
-	result = result.split("),");
-	alert(typeof(result));
+	var result = JSON.parse('{{result | tojson |safe}}');
 	for(var i=0;i<result.length;i++){
-	
     var y = document.createElement("TR");
     y.setAttribute("id", "myTr"+i);
     document.getElementById("table").appendChild(y);
-	var array = result[i].split(",");
+	var array = result[i];
+	
 	for(var j =0;j<array.length;j++){
     var z = document.createElement("TD");
     z.setAttribute("id", "myTd"+i+j);
@@ -57,46 +73,40 @@ w3.includeHTML();
     }
     }
 	
+	onRowClick("table", function (row){
+    var value = row.getElementsByTagName("td")[0].innerHTML;
+    console.log("value>>", value);
+	company_variables  = [{"ID":value}];
+	
+	window.location.href = '/companyProfile/'+value;
+	
+});
+
+	
  }
+ 
+
 function filterNames() {
   var input, filter, table, tr, td, i;
   input = document.getElementById("search");
   filter = input.value.toUpperCase();
   table = document.getElementById("table");
   tr = table.getElementsByTagName("tr");
+  console.log(tr.length);
   for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[0];
+    td = tr[i].getElementsByTagName("td")[1];
+	td1 = tr[i].getElementsByTagName("td")[0]
     if (td) {
-      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+      if (td.innerHTML.toUpperCase().indexOf(filter) > -1 || td1.innerHTML.toUpperCase().indexOf(filter) > -1) {
         tr[i].style.display = "";
       } else {
         tr[i].style.display = "none";
       }
-    }       
+    }        
   }
 }
 
 
-function onRowClick(tableId, callback) {
-    var table = document.getElementById(tableId),
-        rows = table.getElementsByTagName("tr"),
-        i;
-    for (i = 0; i < rows.length; i++) {
-        table.rows[i].onclick = function (row) {
-			
-            return function () {
-			
-                callback(row);
-            };
-        }(table.rows[i]);
-    }
-};
- 
-onRowClick("table", function (row){
-    var value = row.getElementsByTagName("td")[0].innerHTML;
-    document.getElementById('clickedName').value = value + " clicked!";
-    console.log("value>>", value);
-});
 
 
 

@@ -1,8 +1,16 @@
-from flask import Flask,jsonify,request,render_template
+from flask import Flask,jsonify,request,render_template,Response,redirect
 from flask.ext.mysql import MySQL
 from flask_mail import Mail, Message
 from smtplib import SMTP
 from flask import send_file
+from apscheduler.schedulers.background import BackgroundScheduler
+import random as rand
+from random import *
+import matplotlib.pyplot as plt
+import csv
+import numpy as np
+import time, threading
+import json
 
 app = Flask(__name__)
 mysql = MySQL()
@@ -19,15 +27,21 @@ cursor=conn.cursor()
 
 #INSERT INTO `users` (`username`, `password`, `phone_number`, `email`, `name`, `id_num`) VALUES ('Mervin24', 'deep1BC', '8974561230', 'mdalmet@gmail.com', 'Mervin Dalmet', NULL);
 
-def sensor():
+'''def sensor():
     """ Function for test purposes. """
     getcsv()
     plot()
     print("Companies updated")
 
 sched = BackgroundScheduler(daemon=True)
-sched.add_job(sensor,'interval',minutes=1)
+sched.add_job(sensor,'interval',minutes=2)
 sched.start()
+'''
+
+'''def foo():
+	while True:
+		time.sleep(120)
+		getcsv()	'''	
 
 def getcsv():
 	cursor=conn.cursor()
@@ -36,7 +50,7 @@ def getcsv():
 	result=cursor.fetchall()
 	print(type(result))
 	for i in result :
-		name = "/static/data/"+i[0]+".csv"
+		name = "static/data/"+i[0]+".csv"
 		f = open(name,'r')
 		list = f.readlines()
 		f.close()
@@ -49,15 +63,17 @@ def getcsv():
 			count = len(list)
 			new_element = "\n"+str(count)+","+str(i[3])
 			list.append(new_element)
-			for i in list:
-				f.write(str(i))
+			for j in list:
+				f.write(str(j))
 			print(count)
 		f.close()
-		print(i)
+		print(j)
 	for i in result :	
 		cursor.execute("UPDATE company SET Price = '"+str(int(i[3]+i[3]*rand.uniform(-0.01,0.01)))+"' WHERE CompanyId = '"+str(i[0])+"'")
 		print ("changed"+str(i[3])+" "+str(int(i[3]+i[3]*rand.uniform(-0.01,0.01))))
 		conn.commit()
+		
+	plot()
 	return 'Tr'
 	
 def plot():
@@ -71,7 +87,7 @@ def plot():
 	for i in result :
 		print(count)
 		count+=1
-		name = "/static/data/"+i[0]+".csv"
+		name = "static/data/"+i[0]+".csv"
 		
 		x.clear()
 		y.clear()
@@ -85,11 +101,11 @@ def plot():
 		plt.xlabel('Days')
 		plt.ylabel('Price')
 		
-		plt.title('Stock Value')
-		png_name = "/static/images/"+i[0]+".png"
+		plt.title(str(i[1]))
+		png_name = "static/images/"+i[0]+".png"
 		plt.savefig(png_name)
 		plt.gcf().clear()
-			
+		
 	return 'plotted'
 
 
@@ -131,7 +147,10 @@ def login():
 	result = cursor.fetchone()
 	print(str(result[0]))
 	if(result[0]==password):
-		return render_template('homepage.html')
+		cursor.execute("SELECT username,Cash,stock FROM `users` WHERE username='"+username+"' ;")
+		result = cursor.fetchall()
+		print(result)
+		return render_template('cookies.html',result=result)
 	else:
 		return render_template("login.html")
 	
@@ -141,20 +160,29 @@ def navbar():
 	
 @app.route("/homepage",methods=['GET', 'POST'])	
 def homepage():	
-	return render_template("homepage.html")
+	return render_template('homepage.html')
 	
 @app.route("/company",methods=['GET', 'POST'])	
 def company():	
 	cursor=conn.cursor()
 	cursor.execute("SELECT * FROM `company` ;")
 	result=cursor.fetchall()
-	result = str(result)
+	'''result = str(result)
 	result = result.replace("'","")
 	result = result.replace("(","")
 	
 	result = result[0:len(result)-2]
-	print(result)
+	print(result)'''
 	return render_template("company.html", result = result )
+	
+@app.route("/companyProfile/<ID>",methods=['GET', 'POST'])	
+def companyProfile(ID):
+	print(ID)
+	cursor.execute("SELECT CompanyName,Volume,Price FROM `company` WHERE CompanyId = '"+ID+"';")
+	result = cursor.fetchall()
+	
+	
+	return render_template("companyProfile.html",result = result,ID = ID)
 	
 @app.route("/myHoldings",methods=['GET', 'POST'])	
 def myHoldings():	
@@ -168,7 +196,44 @@ def leaderboard():
 def stylesheet():	
 	return render_template("myHoldingcssfile.css")
 
+	
+@app.route("/clearCookies",methods=['GET', 'POST'])	
+def clearCookies():	
+	return render_template("clearCookies.html")
 
+
+@app.route("/buy",methods=['GET', 'POST'])	
+def buy():
+	username = request.form["username"]
+	shares = request.form["shares"]
+	cid = request.form["company_id"]
+	money = request.form["money"]
+	sharesLeft = request.form["sharesLeft"]
+	moneyLeft = request.form["moneyLeft"]
+	
+	print(username)
+	print(shares)
+	print(money)
+	print(cid)
+	price = int(int(money)/int(shares))
+	print(price)
+	cursor.execute("UPDATE users SET cash='"+moneyLeft+"' WHERE username='"+username+"';")
+	cursor.execute("UPDATE company SET Volume='"+sharesLeft+"' WHERE CompanyId='"+cid+"';")
+	cursor.execute("INSERT INTO `transactions` (`username`, `CompanyId`, `Volume`, `Price`) VALUES ( '"+username+"', '"+cid+"', '"+shares+"', '"+str(price)+"');")
+	
+	#cursor.execute()
+	
+	conn.commit();
+	
+	print("updated")
+	return company()
+
+
+
+
+'''timerThread = threading.Thread(target=foo)
+timerThread.daemon = True
+timerThread.start()'''
 
 	
 if __name__ == "__main__":

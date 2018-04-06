@@ -1,0 +1,193 @@
+<html>
+<head>
+	<link rel="stylesheet" href="/stylesheet" /> 
+	<script src="https://www.w3schools.com/lib/w3.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="/static/Cookies.js"></script>
+<style>
+.button {
+    background-color: white; 
+    color: black; 
+    border: 2px solid #4CAF50;
+    color: black;
+	width:10%;
+	margin-top:2%;
+	margin-left:45%;
+    padding: 10px 32px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+.button1 {
+    background-color: #4CAF50; 
+    color: white; 
+    border: 2px solid #4CAF50;
+    color: black;
+	width:10%;
+	margin-top:5%;
+	margin-left:45%;
+    padding: 10px 32px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+.button1:hover {
+    background-color: white!important;
+    color: green;
+}
+.button:hover {
+    background-color: #4CAF50;
+    color: white;
+}
+.overlay {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0, 0.9);
+    overflow-x: hidden;
+    transition: 0.5s;
+}
+
+
+
+.overlay .closebtn {
+	text-decoration:none;
+    position: absolute;
+    top: 20px;
+    right: 45px;
+    font-size: 60px;
+}
+</style>
+</head>
+<body>
+	<div w3-include-html="/navbar"></div>
+	<div id="myNav" class="overlay">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">X</a>
+  <form name = "myform" action = "/buy" onsubmit="return buy(this)" method = "post">
+    <input name = "shares"  id ="shares" style="margin-left:30%;" type="text" placeholder="Volume" onkeyup="check()">
+	<input name = "username" style="display:none;" id ="username" style="margin-left:30%;" type="text" placeholder="Volume" onkeyup="">
+	<input name = "company_id" style="display:none;" id ="cid" style="margin-left:30%;" type="text" placeholder="Volume" onkeyup="">
+	<input name = "sharesLeft" style="display:none;" id ="sl" style="margin-left:30%;" type="text" placeholder="Volume" onkeyup="">
+	<input name = "moneyLeft" style="display:none;" id ="ml" style="m argin-left:30%;" type="text" placeholder="Volume" onkeyup="">
+	<input name = "money" id = "but" class="button1"  type = "submit" value = "BUY">
+	
+  </form>
+</div>
+
+	<div id = "view">
+	<img id = "image" style = "margin-top:3%; margin-left:30%; width:40%; height:60%;">
+	<table id ="table" style = "width:60%">
+		<tr><th>ID</th><th>Name</th><th>Volume</th><th>Price</th></tr>
+		
+	</table>
+	<button class="button" onclick="openNav()">BUY</button>
+	
+	</div>
+ <script>
+	w3.includeHTML();
+	function openNav() {
+    document.getElementById("myNav").style.width = "100%";
+}
+
+function buy(form){
+
+	var but = document.getElementById("but");
+	var shares = document.getElementById("shares");
+	
+	var moneyLeft = document.getElementById("ml");
+	var sharesLeft = document.getElementById("sl");
+	
+	var volume = document.getElementById("td1");
+	
+	if(but.style.backgroundColor=="red"){
+		alert("insufficient cash");
+		return false;
+	}
+	
+	var cash = Cookies.get("cash");
+	var c = cash-but.value
+	console.log(c);
+	Cookies.set('cash', c,{path : '/'});
+	cash = Cookies.get("cash");
+	
+	
+	moneyLeft.value = cash
+	sharesLeft.value = volume.innerHTML-shares.value;
+	alert(user);
+	alert(sha);
+	alert(cash);
+	alert(ID);
+	
+	
+	
+	return true;
+}
+
+function check(){
+	var input = document.getElementById("shares");
+	var price = document.getElementById("td2")
+	var but = document.getElementById("but");
+	var cash = Cookies.get("cash");
+	
+	if(input.value*price.innerHTML<=cash){
+		but.value =input.value*price.innerHTML;
+		but.style.backgroundColor="#4CAF50";
+		}
+	else{
+		but.value = "NO MONEY";
+		but.style.backgroundColor="red";
+		}
+		
+}
+
+function closeNav() {
+    document.getElementById("myNav").style.width = "0%";
+}
+	function getdetails(){
+		var result = JSON.parse('{{ result | tojson | safe}}');
+		var ID = '{{ID}}';
+		source = "/static/images/"+ID+".png";
+		document.getElementById("image").src = source;
+		var row=document.createElement("TR");
+		row.setAttribute("id","trid");
+		document.getElementById("table").appendChild(row);
+		var cell = document.createElement("TD");
+		cell.setAttribute("id","td0");
+		var text = document.createTextNode(ID);
+		var cid = document.getElementById("cid");
+		cid.value=ID;
+		cell.appendChild(text);
+		row.appendChild(cell);
+		var username = document.getElementById("username");
+		var user = Cookies.get("username");
+		username.value=user;
+		for (var i=0;i<result.length;i++){
+			var element = result[i];
+			for(var j =0;j<element.length;j++){
+				var cell = document.createElement("TD");
+				cell.setAttribute("id","td"+j);
+				var text = document.createTextNode(element[j]);
+				cell.appendChild(text);
+				row.appendChild(cell);
+			}
+			
+		}
+		check();
+	}
+	
+	
+	
+ getdetails();	
+</script>
+</body>
+</html>

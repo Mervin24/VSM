@@ -1,0 +1,17 @@
+<html>
+<head>
+<script src="/static/Cookies.js"></script>
+<script>
+function clearCookies(){
+	Cookies.clear("cash");
+	Cookies.clear("username");
+	Cookies.clear("stock");
+	window.location.href='/';
+
+}
+</script>
+</head>
+<body onload="clearCookies();">
+<h3>Loading...</h3>
+</body>
+</html>

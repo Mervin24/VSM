@@ -1,8 +1,12 @@
 body {margin: 0;}
 
 .topnav {
+  position:fixed;
+  top:0px;
   overflow: hidden;
   background-color: #333;
+  width:100%;
+  z-index:1;
 }
 
 .topnav a {
@@ -67,6 +71,7 @@ input[type=text]:focus{
 	background-color:white
 }
 table {
+	cursor:pointer;
 	margin-top:1%;
 	margin-left:20%;
 	border-collapse: collapse;
