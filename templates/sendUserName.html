@@ -1,0 +1,20 @@
+<html>
+<head>
+<script src="/static/Cookies.js"></script>
+<script>
+function send(){
+	var x = document.getElementById("user")
+	var user = Cookies.get("username");
+	x.value = user;
+	document.myForm.submit();
+}
+</script>
+</head>
+<body onload="send();">
+<form name="myForm" action="/myHoldings" method="post">
+
+<input style="display:none;" name="username" id = "user">
+</form>
+<h3>Loading...</h3>
+</body>
+</html>

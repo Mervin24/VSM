@@ -21,7 +21,7 @@
 		});
 	</script>
 </head>
-<body>
+<body onload="">
 <div w3-include-html="/navbar"></div>
 
 <h1  class="h1" style="font-size:5em; margin-top:10%" align="center">WELCOME TO VSM</h1>
@@ -36,7 +36,12 @@
 
  <script>
 w3.includeHTML();
-
+function checkCookies(){
+	if(!Cookies.get("username")){
+		window.location.href="/";
+	}
+}
+checkCookies();
 </script> 
 </body>
 </html>

@@ -1,45 +1,87 @@
 <html>
 <head>
 	<script src="https://www.w3schools.com/lib/w3.js"></script> 
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script><script src="/static/Cookies.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="/static/Cookies.js"></script>
 	<link rel="stylesheet" href="/stylesheet" /> 
+<style>
+	.button1 {
+    background-color: #4CAF50; 
+    color: white; 
+    border: 2px solid #4CAF50;
+    color: black;
+	width:10%;
+	margin-top:5%;
+	margin-left:45%;
+    padding: 10px 32px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+.button1:hover {
+    background-color: white!important;
+    color: green;
+}
+
+.overlay {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0, 0.9);
+    overflow-x: hidden;
+    transition: 0.5s;
+}
+
+
+
+.overlay .closebtn {
+	text-decoration:none;
+    position: absolute;
+    top: 20px;
+    right: 45px;
+    font-size: 60px;
+}
+</style>
 </head>
-<body>
+<body onload="">
 	
 <div w3-include-html="/navbar"></div>
+
+	<div id="myNav" class="overlay">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">X</a>
+  <form name = "myform" action = "/sell" onsubmit="return sell(this)" method = "post">
+    <input name = "shares"  id ="shares" style="margin-left:30%;" type="text" placeholder="Volume" onkeyup="check()">
+	<input name = "username" style="display:none;" id ="username" style="margin-left:30%;" type="text" placeholder="Volume" onkeyup="">
+	<input name = "company_id" style="display:none;" id ="cid" style="margin-left:30%;" type="text" placeholder="Volume" onkeyup="">
+	<input name = "moneyLeft" style="display:none;" id ="ml" style="margin-left:30%;" type="text" placeholder="Volume" onkeyup="">
+	<input name = "sharesLeft" style="display:none;" id ="sl" style="margin-left:30%;" type="text" placeholder="Volume" onkeyup="">
+	<input name = "price" style="display:none;" id ="price" style="margin-left:30%;" type="text" placeholder="Volume" onkeyup="">
+	
+	<input name = "money" id = "but" class="button1"  type = "submit" value = "SELL">
+	
+  </form>
+</div>
+
+
 <input align="center" style="display:none;" type="text" placeholder="Search..." onkeyup="filterNames()" id="search">
 <div style="overflow-x:auto;">
 	<table id="table" style="display:none;">
-	  <tr>
-		<th>NAME</th>
+	  <tr>	
+		<th>TID</th>
+		<th>CID</th>
 		<th>VOLUME</th>
-		<th>TOTAL VALUE</th>
+		<th>PRICE</th>
 		<th>SELL</th>
+		
 	  </tr>
-	  <tr>
-		<td>TATA</td>
-		<td>6</td>
-		<td>6000</td>
-		<td>SELL</td>
-	  </tr>
-	  <tr>
-		<td>Wipro</td>
-		<td>4</td>
-		<td>8000</td>
-		<td>SELL</td>
-	  </tr>
-	  <tr>
-		<td>MRF</td>
-		<td>10</td>
-		<td>5000</td>
-		<td>SELL</td>
-	  </tr>
-	  <tr>
-		<td>Reliance</td>
-		<td>6</td>
-		<td>15000</td>   
-		<td>SELL</td>
-	</tr>
+	  
 	</table>
 </div>
  <script>
@@ -52,7 +94,7 @@ function filterNames() {
   table = document.getElementById("table");
   tr = table.getElementsByTagName("tr");
   for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[0];
+    td = tr[i].getElementsByTagName("td")[1];
     if (td) {
       if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
         tr[i].style.display = "";
@@ -62,9 +104,118 @@ function filterNames() {
     }       
   }
 }
-</script>
-	<script>
+function sell(form){
+	var but = document.getElementById("but");
+	var shares = document.getElementById("shares");
+	if(but.value == "ERROR!" || shares.value==""){
+		return false;
+	}
+	var moneyLeft = document.getElementById("ml");
+	var price = document.getElementById("price");
 	
+	moneyLeft.value = parseInt(moneyLeft.value) + parseInt(price.value*shares.value);
+	c = moneyLeft.value;
+	Cookies.set('cash', c,{path : '/'});
+	
+	return true;
+	
+
+}
+function check(){
+var sharesLeft = document.getElementById("sl");
+var shares = document.getElementById("shares");
+var but = document.getElementById("but");
+
+	if((shares.value-sharesLeft.value)>0){
+		but.value = "ERROR!";
+		but.style.backgroundColor="red";
+	}else{
+		but.value ="SELL";
+		but.style.backgroundColor="#4CAF50";
+	}
+	
+}
+
+function closeNav() {
+    document.getElementById("myNav").style.width = "0%";
+}
+
+	function openNav() {
+    document.getElementById("myNav").style.width = "100%";
+	check();
+}
+
+ function resultrun(){
+	if(!Cookies.get("username")){
+		window.location.href="/";
+	}
+	var result = JSON.parse('{{result | tojson |safe}}');
+	var arr = JSON.parse('{{arr | tojson |safe}}');
+	for(var i=0;i<result.length;i++){
+    var y = document.createElement("TR");
+    y.setAttribute("id", "myTr"+i);
+    document.getElementById("table").appendChild(y);
+	var array = result[i];
+	
+	for(var j =0;j<array.length;j++){
+	if(j==1){
+		var z = document.createElement("TD");
+		z.setAttribute("id", "myTd"+i+j);
+		var a = document.createElement("A");
+		var t = document.createTextNode(array[j]);
+		a.appendChild(t);
+		a.setAttribute("href","/companyProfile/"+array[j]);
+		z.appendChild(a);
+		 document.getElementById("myTr"+i).appendChild(z);
+		continue;
+	}	
+		
+	var z = document.createElement("TD");
+    z.setAttribute("id", "myTd"+i+j);
+    var t = document.createTextNode(array[j]);
+    z.appendChild(t);
+    document.getElementById("myTr"+i).appendChild(z);
+    }
+	var z = document.createElement("TD");
+    z.setAttribute("id", "myTd"+i+j);  
+	var t = document.createTextNode(arr[i]);
+	z.appendChild(t);
+	document.getElementById("myTr"+i).appendChild(z);
+	var z1 = document.createElement("TD");
+    z1.setAttribute("id", "myTd"+i+j); 	
+	var t = document.createTextNode("SELL");
+	z1.appendChild(t);
+	document.getElementById("myTr"+i).appendChild(z1);	
+}
+	
+	onRowClick("table", function (row){
+	var username = document.getElementById("username");
+	var moneyLeft = document.getElementById("ml");
+	var cid = document.getElementById("cid");
+	var sharesLeft = document.getElementById("sl");
+	var price = document.getElementById("price");
+	
+	
+	
+	
+    /*var value = row.getElementsByTagName("td")[1].innerHTML;
+    console.log("value>>", value);
+	company_variables  = [{"ID":value}];*/
+	username.value = Cookies.get("username");
+	sharesLeft.value  = row.getElementsByTagName("td")[2].innerHTML;
+	cid.value = row.getElementsByTagName("td")[1].getElementsByTagName("a")[0].innerHTML;
+	moneyLeft.value = Cookies.get("cash");
+	price.value = row.getElementsByTagName("td")[3].innerHTML;
+	
+	
+	
+	
+	openNav();
+});
+
+	
+ }
+	resultrun();
 		function onRowClick(tableId, callback) {
     var table = document.getElementById(tableId),
         rows = table.getElementsByTagName("tr"),
@@ -80,11 +231,7 @@ function filterNames() {
     }
 };
  
-onRowClick("table", function (row){
-    var value = row.getElementsByTagName("td")[0].innerHTML;
-    document.getElementById('search').value = value + " clicked!";
-    console.log("value>>", value);
-});
+
 		function myFunction() {
 		var x = document.getElementById("tnav");
 		if (x.className === "topnav") {
@@ -101,6 +248,9 @@ onRowClick("table", function (row){
         table.animate({width: '0px', opacity: '0.8'}, "slow");
         table.animate({width: '60%', opacity: '0.8'}, "slow");
 		});
+		
+		
+
 	</script> 
 </body>
 </html>

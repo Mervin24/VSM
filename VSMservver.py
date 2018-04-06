@@ -185,12 +185,34 @@ def companyProfile(ID):
 	return render_template("companyProfile.html",result = result,ID = ID)
 	
 @app.route("/myHoldings",methods=['GET', 'POST'])	
-def myHoldings():	
-	return render_template("myHoldings.html")
+def myHoldings():
+	cursor=conn.cursor()
+	username = ""
+	if request.method == 'POST':
+		username = request.form["username"]
+	print(username)
+	cursor.execute("SELECT TransactionId,CompanyId ,sum(Volume) FROM `transactions` WHERE username='"+username+"' GROUP BY CompanyId;")
+	result=cursor.fetchall()
+	arr = []
+	for i in result:
+		if i[2]==0:
+			print("removed "+i[1])
+			lis = list(result)
+			lis.remove(i)
+			result = tuple(lis)
+			continue
+		cursor.execute("SELECT Price FROM `company` WHERE CompanyId='"+i[1]+"';");
+		arr.append(cursor.fetchone())
+	print(arr)
+	return render_template("myHoldings.html",result = result, arr = arr)
 
 @app.route("/leaderboard",methods=['GET', 'POST'])	
 def leaderboard():	
-	return render_template("leaderboard.html")
+	cursor.execute("SELECT username,Cash FROM users ORDER BY Cash DESC");
+	result = cursor.fetchall()
+	for i in result:
+		print(i[1])
+	return render_template("leaderboard.html",result=result)
 	
 @app.route("/stylesheet",methods=['GET', 'POST'])	
 def stylesheet():	
@@ -201,7 +223,11 @@ def stylesheet():
 def clearCookies():	
 	return render_template("clearCookies.html")
 
+@app.route("/sendUserName",methods=['GET', 'POST'])	
+def sendUserName():	
+	return render_template("sendUserName.html")
 
+	
 @app.route("/buy",methods=['GET', 'POST'])	
 def buy():
 	username = request.form["username"]
@@ -215,11 +241,9 @@ def buy():
 	print(shares)
 	print(money)
 	print(cid)
-	price = int(int(money)/int(shares))
-	print(price)
 	cursor.execute("UPDATE users SET cash='"+moneyLeft+"' WHERE username='"+username+"';")
 	cursor.execute("UPDATE company SET Volume='"+sharesLeft+"' WHERE CompanyId='"+cid+"';")
-	cursor.execute("INSERT INTO `transactions` (`username`, `CompanyId`, `Volume`, `Price`) VALUES ( '"+username+"', '"+cid+"', '"+shares+"', '"+str(price)+"');")
+	cursor.execute("INSERT INTO `transactions` (`username`, `CompanyId`, `Volume`) VALUES ( '"+username+"', '"+cid+"', '"+shares+"');")
 	
 	#cursor.execute()
 	
@@ -229,6 +253,36 @@ def buy():
 	return company()
 
 
+@app.route("/sell",methods=['GET', 'POST'])	
+def sell():
+	username = request.form["username"]
+	shares = request.form["shares"]
+	cid = request.form["company_id"]
+	moneyLeft = request.form["moneyLeft"]
+	
+	print(username)
+	print(shares)
+	print(moneyLeft)
+	print(cid)
+	cursor.execute("SELECT Volume FROM company WHERE CompanyId='"+cid+"';")
+	sharesLeft = cursor.fetchone()
+	sharesLeft = sharesLeft[0]
+	print("before shares "+str(sharesLeft))
+	sharesLeft = int(sharesLeft)+ int(shares)
+	print("updated shares "+str(sharesLeft))
+	cursor.execute("UPDATE users SET cash='"+moneyLeft+"' WHERE username='"+username+"';")
+	cursor.execute("UPDATE company SET Volume='"+str(sharesLeft)+"' WHERE CompanyId='"+cid+"';")
+	cursor.execute("INSERT INTO `transactions` (`username`, `CompanyId`, `Volume`) VALUES ( '"+username+"', '"+cid+"', '-"+shares+"');")
+	
+	#cursor.execute()
+	
+	conn.commit();
+	
+	print("updated")
+	return company()
+	
+	
+	
 
 
 '''timerThread = threading.Thread(target=foo)

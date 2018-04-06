@@ -25,7 +25,7 @@
 		
 	</script>
 </head>
-<body onload="resultrun()">
+<body onload="">
 	
 	<div w3-include-html="/navbar"></div>
 	<input id="search" style="display:none"align="center" type="text" placeholder="Search..." onkeyup="filterNames()">
@@ -56,6 +56,9 @@ w3.includeHTML();
 };
 
  function resultrun(){
+	if(!Cookies.get("username")){
+		window.location.href="/";
+	}
 	var result = JSON.parse('{{result | tojson |safe}}');
 	for(var i=0;i<result.length;i++){
     var y = document.createElement("TR");
@@ -85,7 +88,7 @@ w3.includeHTML();
 	
  }
  
-
+resultrun();
 function filterNames() {
   var input, filter, table, tr, td, i;
   input = document.getElementById("search");
