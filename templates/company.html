@@ -21,13 +21,17 @@
 			table.animate({width: '0px', opacity: '0.8'}, "slow");
 			table.animate({width: '60%', opacity: '0.8'}, "slow");
 		});
-		
+		$(document).ready(function(){
+        var h1 = $(".h1");  
+        h1.animate({fontSize: '2em'}, 1000);
+		});
 		
 	</script>
 </head>
 <body onload="">
 	
 	<div w3-include-html="/navbar"></div>
+	<h1   id ="h1" class="h1" style="font-size:5em; margin-top:10%" align="center">WELCOME TO VSM</h1>
 	<input id="search" style="display:none"align="center" type="text" placeholder="Search..." onkeyup="filterNames()">
 	<table id ="table" style="display:none">
 		<tr><th>ID</th><th>Name</th><th>Volume</th><th>Price</th></tr>
@@ -58,6 +62,8 @@ w3.includeHTML();
  function resultrun(){
 	if(!Cookies.get("username")){
 		window.location.href="/";
+	}else{
+		document.getElementById("h1").innerHTML="CASH IN HAND : "+Cookies.get("cash") ;
 	}
 	var result = JSON.parse('{{result | tojson |safe}}');
 	for(var i=0;i<result.length;i++){

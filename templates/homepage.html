@@ -21,16 +21,14 @@
 		});
 	</script>
 </head>
-<body onload="">
+<body onload="news()">
 <div w3-include-html="/navbar"></div>
 
-<h1  class="h1" style="font-size:5em; margin-top:10%" align="center">WELCOME TO VSM</h1>
+<h1   id ="h1" class="h1" style="font-size:5em; margin-top:10%" align="center">WELCOME TO VSM</h1>
 <h3 align="center"> News</h3>
 <p align="center">
-<ul>
-	<li>TATA acquired a new venture</li>
-	<li>Cisco to launch a new product in market</li>
-	<li>Reliance faces a lawsuit</li>
+<ul id = "ul">
+	
 </ul>
 </p>
 
@@ -39,6 +37,20 @@ w3.includeHTML();
 function checkCookies(){
 	if(!Cookies.get("username")){
 		window.location.href="/";
+	}else{
+		document.getElementById("h1").innerHTML="WELCOME "+Cookies.get("username")+"<br> CASH IN HAND : "+Cookies.get("cash") ;
+	}
+}
+function news(){
+	result = JSON.parse('{{result|tojson|safe}}');
+	ul = document.getElementById('ul');
+	for(var i=0;i<result.length;i++){
+	
+		li = document.createElement("LI");
+		t = document.createTextNode(result[i]);
+		
+		li.appendChild(t);
+		ul.appendChild(li);
 	}
 }
 checkCookies();

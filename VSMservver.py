@@ -11,6 +11,7 @@ import csv
 import numpy as np
 import time, threading
 import json
+import hashlib
 
 app = Flask(__name__)
 mysql = MySQL()
@@ -27,26 +28,16 @@ cursor=conn.cursor()
 
 #INSERT INTO `users` (`username`, `password`, `phone_number`, `email`, `name`, `id_num`) VALUES ('Mervin24', 'deep1BC', '8974561230', 'mdalmet@gmail.com', 'Mervin Dalmet', NULL);
 
-'''def sensor():
-    """ Function for test purposes. """
-    getcsv()
-    plot()
-    print("Companies updated")
 
-sched = BackgroundScheduler(daemon=True)
-sched.add_job(sensor,'interval',minutes=2)
-sched.start()
-'''
 
 '''def foo():
 	while True:
-		time.sleep(120)
-		getcsv()	'''	
+		time.sleep(180)
+		getcsv()'''	
 
 def getcsv():
 	cursor=conn.cursor()
-	
-	cursor.execute("SELECT * FROM `company` ;")
+	cursor.execute("SELECT * FROM `company`;")
 	result=cursor.fetchall()
 	print(type(result))
 	for i in result :
@@ -74,7 +65,8 @@ def getcsv():
 		conn.commit()
 		
 	plot()
-	return 'Tr'
+	
+	return 'True'
 	
 def plot():
 	cursor=conn.cursor()
@@ -132,6 +124,14 @@ def Signup():
 	contact = request.form["contact"]
 	id_num = request.form["id"]
 	email = request.form["email"]
+	cursor.execute("SELECT username From users WHERE username = '"+Username+"';")
+	result = cursor.fetchone()
+	if(result is not None):
+		return render_template('signup.html')
+	hash_object_password = hashlib.md5(password.encode())
+	print(password)
+	print(hash_object_password.hexdigest())
+	password = hash_object_password.hexdigest()
 	cursor.execute("INSERT INTO `users` (`username`, `password`, `phone_number`, `email`, `name`) VALUES ('"+Username+"', '"+password+"', '"+contact+"', '"+email+"', '"+firstName+" "+lastName+"');")
 	conn.commit()
 	return render_template("login.html")
@@ -143,11 +143,15 @@ def login():
 	username = request.form["username"]
 	password = request.form["password"]
 	print(password)
+	hash_object_password = hashlib.md5(password.encode())
+	print(hash_object_password.hexdigest())
+	password = hash_object_password.hexdigest()
 	cursor.execute("SELECT `password` FROM `users` WHERE username='"+username+"' ;")
 	result = cursor.fetchone()
-	print(str(result[0]))
+	if(result is None):
+		return render_template("login.html")
 	if(result[0]==password):
-		cursor.execute("SELECT username,Cash,stock FROM `users` WHERE username='"+username+"' ;")
+		cursor.execute("SELECT username,Cash FROM `users` WHERE username='"+username+"' ;")
 		result = cursor.fetchall()
 		print(result)
 		return render_template('cookies.html',result=result)
@@ -160,7 +164,9 @@ def navbar():
 	
 @app.route("/homepage",methods=['GET', 'POST'])	
 def homepage():	
-	return render_template('homepage.html')
+	cursor.execute("SELECT Headline FROM news;")
+	result = cursor.fetchall()
+	return render_template('homepage.html',result = result)
 	
 @app.route("/company",methods=['GET', 'POST'])	
 def company():	
@@ -194,6 +200,7 @@ def myHoldings():
 	cursor.execute("SELECT TransactionId,CompanyId ,sum(Volume) FROM `transactions` WHERE username='"+username+"' GROUP BY CompanyId;")
 	result=cursor.fetchall()
 	arr = []
+	print(result)
 	for i in result:
 		if i[2]==0:
 			print("removed "+i[1])
@@ -204,7 +211,11 @@ def myHoldings():
 		cursor.execute("SELECT Price FROM `company` WHERE CompanyId='"+i[1]+"';");
 		arr.append(cursor.fetchone())
 	print(arr)
-	return render_template("myHoldings.html",result = result, arr = arr)
+	sum = 0
+	for i in range(len(result)):
+		sum += int(result[i][2]) * (arr[i][0])
+	print(sum)
+	return render_template("myHoldings.html",result = result, arr = arr, sum = sum)
 
 @app.route("/leaderboard",methods=['GET', 'POST'])	
 def leaderboard():	
@@ -288,7 +299,6 @@ def sell():
 '''timerThread = threading.Thread(target=foo)
 timerThread.daemon = True
 timerThread.start()'''
-
 	
 if __name__ == "__main__":
 	app.run(host="0.0.0.0",port=5050,debug=True)

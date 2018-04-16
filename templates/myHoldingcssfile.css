@@ -1,5 +1,4 @@
 body {margin: 0;}
-
 .topnav {
   position:fixed;
   top:0px;
@@ -8,7 +7,6 @@ body {margin: 0;}
   width:100%;
   z-index:1;
 }
-
 .topnav a {
   float: left;
   display: block;
@@ -18,21 +16,17 @@ body {margin: 0;}
   text-decoration: none;
   font-size: 17px;
 }
-
 .topnav a:hover {
   background-color: #42f468;
   color: black;
 }
-
 .active {
   background-color: #4CAF50;
   color: white;
 }
-
 .topnav .icon {
   display: none;
 }
-
 @media screen and (max-width: 600px) {
   .topnav a:not(:first-child) {display: none;}
   .topnav a.icon {
@@ -40,7 +34,6 @@ body {margin: 0;}
     display: block;
   }
 }
-
 @media screen and (max-width: 600px) {
   .topnav.responsive {position: relative;}
   .topnav.responsive .icon {

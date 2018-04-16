@@ -6,13 +6,15 @@ function clearCookies(){
 	Cookies.clear("cash");
 	Cookies.clear("username");
 	Cookies.clear("stock");
-	location.href='/';
+	document.getElementById("for").submit();
 	
 }
 </script>
 </head>
 
-<body onload="clearCookies();">	
+<body onload="clearCookies()">	
+<form id = "for" action="/" method="">
+</form>
 <h3>Loading...</h3>
 </body>
 </html>

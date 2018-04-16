@@ -69,7 +69,7 @@
   </form>
 </div>
 
-
+<h1   id ="h1" class="h1" style="font-size:2em; margin-top:10%" align="center">WELCOME TO VSM</h1>
 <input align="center" style="display:none;" type="text" placeholder="Search..." onkeyup="filterNames()" id="search">
 <div style="overflow-x:auto;">
 	<table id="table" style="display:none;">
@@ -151,6 +151,8 @@ function closeNav() {
 	}
 	var result = JSON.parse('{{result | tojson |safe}}');
 	var arr = JSON.parse('{{arr | tojson |safe}}');
+	var sum = JSON.parse('{{sum | tojson |safe}}');
+	document.getElementById("h1").innerHTML="TOTAL STOCK VALUATION : "+sum ;
 	for(var i=0;i<result.length;i++){
     var y = document.createElement("TR");
     y.setAttribute("id", "myTr"+i);
